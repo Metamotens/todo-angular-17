@@ -6,9 +6,10 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  template: `<main
+    class="bg-gray-900 text-white min-h-screen flex items-center justify-center"
+  >
+    <router-outlet />
+  </main>`,
 })
-export class AppComponent {
-  title = 'todolist-angular17';
-}
+export class AppComponent {}
