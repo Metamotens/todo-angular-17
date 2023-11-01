@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'todo-form',
+  selector: 'app-todo-form',
   standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   template: `<form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex">
     <div class="relative mx-auto">
       <input
@@ -22,7 +23,6 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
       </button>
     </div>
   </form>`,
-  imports: [CommonModule, ReactiveFormsModule],
 })
 export class TodoFormComponent {
   @Output() add = new EventEmitter<string>();

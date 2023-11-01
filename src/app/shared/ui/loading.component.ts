@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'loading',
+  selector: 'app-loading',
   standalone: true,
   template: `<svg
     aria-hidden="true"

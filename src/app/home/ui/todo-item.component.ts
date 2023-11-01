@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CheckTodo, Todo } from '../../shared/interfaces/todo';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'todo-item',
+  selector: 'app-todo-item',
   standalone: true,
+  imports: [RouterLink],
   template: `
     <div class="flex justify-between items-center h-full space-x-2">
       <div class="flex items-center">
@@ -20,16 +22,15 @@ import { CheckTodo, Todo } from '../../shared/interfaces/todo';
         >
       </div>
       <div class="space-x-2">
-        <button
-          type="button"
+        <a
           class="
             'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center mr-2'
           "
-          (click)="edit.emit(todo.id)"
+          routerLink="/detail/{{ todo.id }}"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-edit"
+            class="icon icon-tabler icon-tabler-eye"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -40,15 +41,12 @@ import { CheckTodo, Todo } from '../../shared/interfaces/todo';
             stroke-linejoin="round"
           >
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
             <path
-              d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"
+              d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"
             ></path>
-            <path
-              d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"
-            ></path>
-            <path d="M16 5l3 3"></path>
           </svg>
-        </button>
+        </a>
         <button
           type="button"
           class="
@@ -79,7 +77,6 @@ import { CheckTodo, Todo } from '../../shared/interfaces/todo';
       </div>
     </div>
   `,
-  imports: [],
 })
 export class TodoItemComponent {
   @Input({ required: true }) todo!: Todo;

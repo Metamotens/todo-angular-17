@@ -6,40 +6,31 @@ import { TodoItemComponent } from './ui/todo-item.component';
 import { LoadingComponent } from '../shared/ui/loading.component';
 
 @Component({
-  selector: 'home',
+  selector: 'app-home',
   standalone: true,
   template: `
-    <section
-      class="flex flex-col justify-center items-center p-8 border border-1 rounded-md bg-gray-800 w-[650px] my-8"
-    >
-      <h1 class="text-3xl font-bold mb-8">TODOS App</h1>
-      <article class="w-full min-h-[600px]">
-        @defer (when loaded()) {
-        <todo-form (add)="todoService.add$.next($event)" />
-        <article class="flex flex-col p-2 mt-6 divide-y-[1px] divide-gray-700">
-          @for (todo of todos(); track todo.id) {
-          <todo-item
-            class="h-12"
-            [todo]="todo"
-            (edit)="todoService.remove$.next($event)"
-            (remove)="todoService.remove$.next($event)"
-            (toggleCheck)="todoService.toggleCheck$.next($event)"
-          />
-          } @empty {
-          <span class="mx-auto">Todo list is empty, add new todo</span>
-          }
-        </article>
-        } @placeholder {
-        <div class="flex justify-center items-center h-4/5">
-          <loading
-            [class]="
-              'w-16 h-16 text-gray-200 animate-spin dark:text-blue-600 fill-white'
-            "
-          />
-        </div>
-        } @error { Error }
-      </article>
-    </section>
+    @defer (when loaded()) {
+    <app-todo-form (add)="todoService.add$.next($event)" />
+    <div class="flex flex-col p-2 mt-6 divide-y-[1px] divide-gray-700 w-hull">
+      @for (todo of todos(); track todo .id) {
+      <app-todo-item
+        class="h-12"
+        [todo]="todo"
+        (edit)="todoService.remove$.next($event)"
+        (remove)="todoService.remove$.next($event)"
+        (toggleCheck)="todoService.toggleCheck$.next($event)"
+      />
+      } @empty {
+      <span class="mx-auto">Todo list is empty, add new todo</span>
+      }
+    </div>
+    } @placeholder {
+    <app-loading
+      [class]="
+        'w-16 h-16 text-gray-200 animate-spin dark:text-blue-600 fill-white flex justify-center items-center'
+      "
+    />
+    } @error { Error }
   `,
   imports: [TodoFormComponent, TodoItemComponent, LoadingComponent],
 })
