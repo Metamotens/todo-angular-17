@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-loading',
   standalone: true,
+  imports: [],
   template: `<svg
     aria-hidden="true"
     class="{{ class }}"
@@ -19,7 +20,6 @@ import { Component, Input } from '@angular/core';
       fill="currentFill"
     />
   </svg>`,
-  imports: [],
 })
 export class LoadingComponent {
   @Input() class!: string;

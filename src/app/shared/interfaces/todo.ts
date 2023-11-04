@@ -1,9 +1,14 @@
 export interface Todo {
   id: string;
-  name: string;
+  title: string;
+  description: string;
   checked: boolean;
 }
 
-export type CheckTodo = Omit<Todo, 'name'>;
+export type AddTodo = Pick<Todo, 'title' | 'description'>;
+
+export type CheckTodo = Pick<Todo, 'id' | 'checked'>;
+
+export type EditTodo = Omit<Todo, 'checked'>;
 
 export type RemoveTodo = Todo['id'];

@@ -7,7 +7,7 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [RouterLink],
   template: `
-    <div class="flex justify-between items-center h-full space-x-2">
+    <div class="flex justify-between items-center h-16">
       <div class="flex items-center">
         <input
           type="checkbox"
@@ -15,11 +15,14 @@ import { RouterLink } from '@angular/router';
           (change)="toggleCheck.emit({ id: todo.id, checked: !todo.checked })"
           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
         />
-        <label
-          for="default-checkbox"
-          class="ml-2 font-medium text-gray-900 dark:text-gray-300"
-          >{{ todo.name }}</label
-        >
+        <div class="flex flex-col ml-4">
+          <span class="font-medium text-gray-900 dark:text-gray-300"
+            >{{ todo.title }}
+          </span>
+          <span class="text-sm text-gray-400 dark:text-gray-600"
+            >{{ todo.description }}
+          </span>
+        </div>
       </div>
       <div class="space-x-2">
         <a
@@ -30,7 +33,7 @@ import { RouterLink } from '@angular/router';
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-eye"
+            class="icon icon-tabler icon-tabler-edit"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -41,10 +44,13 @@ import { RouterLink } from '@angular/router';
             stroke-linejoin="round"
           >
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
             <path
-              d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"
+              d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"
             ></path>
+            <path
+              d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"
+            ></path>
+            <path d="M16 5l3 3"></path>
           </svg>
         </a>
         <button
@@ -76,11 +82,12 @@ import { RouterLink } from '@angular/router';
         </button>
       </div>
     </div>
+
+    <dialog>test dialog</dialog>
   `,
 })
 export class TodoItemComponent {
   @Input({ required: true }) todo!: Todo;
-  @Output() edit = new EventEmitter<string>();
   @Output() remove = new EventEmitter<string>();
   @Output() toggleCheck = new EventEmitter<CheckTodo>();
 }

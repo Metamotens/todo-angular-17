@@ -1,5 +1,11 @@
 import { Injectable, computed, effect, inject, signal } from '@angular/core';
-import { CheckTodo, RemoveTodo, Todo } from '../interfaces/todo';
+import {
+  AddTodo,
+  CheckTodo,
+  EditTodo,
+  RemoveTodo,
+  Todo,
+} from '../interfaces/todo';
 import { v4 as uuid } from 'uuid';
 import { StorageService } from './storage.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -29,8 +35,8 @@ export class TodoService {
 
   // sources
   private taskListLoaded$ = this.storageService.loadTodos();
-  add$ = new Subject<string>();
-  edit$ = new Subject<Todo>();
+  add$ = new Subject<AddTodo>();
+  edit$ = new Subject<EditTodo>();
   remove$ = new Subject<RemoveTodo>();
   toggleCheck$ = new Subject<CheckTodo>();
 
@@ -42,9 +48,9 @@ export class TodoService {
       error: (error) => this.state.update((state) => ({ ...state, error })),
     });
 
-    this.add$.pipe(takeUntilDestroyed()).subscribe((todoName) => {
+    this.add$.pipe(takeUntilDestroyed()).subscribe((addTodo: AddTodo) => {
       const todoIndex = this.todos().findIndex(
-        (t) => t.name.toLowerCase() === todoName.toLowerCase()
+        (t) => t.title.toLowerCase() === addTodo.title.toLowerCase()
       );
 
       if (todoIndex !== -1) {
@@ -54,12 +60,20 @@ export class TodoService {
 
       this.state.update((state) => ({
         ...state,
-        todos: [...state.todos, { id: uuid(), name: todoName, checked: false }],
+        todos: [
+          ...state.todos,
+          {
+            id: uuid(),
+            title: addTodo.title,
+            description: addTodo.description,
+            checked: false,
+          },
+        ],
       }));
     });
 
     this.toggleCheck$
-      .pipe(takeUntilDestroyed(), tap(console.log))
+      .pipe(takeUntilDestroyed())
       .subscribe((checkTodo: CheckTodo) =>
         this.state.update((state) => ({
           ...state,
@@ -71,16 +85,22 @@ export class TodoService {
         }))
       );
 
-    this.edit$.pipe(takeUntilDestroyed()).subscribe((todo: Todo) =>
+    this.edit$.pipe(takeUntilDestroyed()).subscribe((editTodo: EditTodo) =>
       this.state.update((state) => ({
         ...state,
-        todos: state.todos.map((t) =>
-          t.id === todo.id ? { ...t, name: todo.name } : t
+        todos: state.todos.map((todo) =>
+          todo.id === editTodo.id
+            ? {
+                ...todo,
+                title: editTodo.title,
+                description: editTodo.description,
+              }
+            : todo
         ),
       }))
     );
 
-    this.remove$.pipe(takeUntilDestroyed()).subscribe((id) =>
+    this.remove$.pipe(takeUntilDestroyed()).subscribe((id: RemoveTodo) =>
       this.state.update((state) => ({
         ...state,
         todos: state.todos.filter((todo: Todo) => todo.id !== id),
